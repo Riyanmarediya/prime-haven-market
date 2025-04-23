@@ -1,0 +1,458 @@
+// ================ CONFIGURATION FILES ================
+
+// package.json
+{
+  "name": "prime-haven-market",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^1.0.0",
+    "@heroicons/react": "^2.0.18",
+    "@prisma/client": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "next": "13.4.19",
+    "next-auth": "^4.22.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.27",
+    "prisma": "^5.0.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.1.6"
+  }
+}
+
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['localhost', 'primehavenmarket.com'],
+  },
+}
+
+module.exports = nextConfig
+
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#2A1B3D',
+        secondary: '#FF8A3D',
+        accent: '#4FB8E8',
+      },
+    },
+  },
+  plugins: [],
+}
+
+// ================ MAIN APP FILES ================
+
+// src/app/layout.tsx
+import { Inter } from 'next/font/google'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'Prime Haven Market',
+  description: 'Your trusted wholesale distribution partner',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
+  )
+}
+
+// src/app/page.tsx
+import Hero from '@/components/Hero'
+import Features from '@/components/Features'
+import AboutUs from '@/components/AboutUs'
+import Contact from '@/components/Contact'
+
+export default function Home() {
+  return (
+    <div className="min-h-screen">
+      <Hero />
+      <Features />
+      <AboutUs />
+      <Contact />
+    </div>
+  )
+}
+
+// ================ COMPONENTS ================
+
+// src/components/Hero.tsx
+export default function Hero() {
+  return (
+    <div className="relative bg-primary overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+          <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+            <div className="sm:text-center lg:text-left">
+              <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                <span className="block">Your Trusted Partner in</span>
+                <span className="block text-secondary">Wholesale Distribution</span>
+              </h1>
+              <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                Prime Haven Market delivers excellence in wholesale distribution, connecting quality products with businesses worldwide.
+              </p>
+              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                <div className="rounded-md shadow">
+                  <a href="/contact" className="btn-primary">
+                    Get Started
+                  </a>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// src/components/Navbar.tsx
+export default function Navbar() {
+  return (
+    <nav className="bg-primary text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <a href="/" className="flex items-center">
+              <img src="/logo.png" alt="Prime Haven Market" className="h-10 w-auto" />
+              <span className="ml-2 text-xl font-bold">Prime Haven Market</span>
+            </a>
+          </div>
+          
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-4">
+              <a href="/" className="hover:text-secondary px-3 py-2">Home</a>
+              <a href="/products" className="hover:text-secondary px-3 py-2">Products</a>
+              <a href="/about" className="hover:text-secondary px-3 py-2">About</a>
+              <a href="/contact" className="hover:text-secondary px-3 py-2">Contact</a>
+              <a href="/login" className="btn-primary ml-4">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+// src/components/Features.tsx
+export default function Features() {
+  const features = [
+    {
+      title: 'Global Distribution',
+      description: 'Worldwide delivery network',
+      icon: '🌎',
+    },
+    {
+      title: 'Quality Assurance',
+      description: 'Premium product quality',
+      icon: '✓',
+    },
+    {
+      title: 'Customer Support',
+      description: '24/7 dedicated support',
+      icon: '💬',
+    },
+  ]
+
+  return (
+    <div className="py-12 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:text-center">
+          <h2 className="text-base text-secondary font-semibold tracking-wide uppercase">
+            Features
+          </h2>
+          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-primary sm:text-4xl">
+            Why Choose Prime Haven Market
+          </p>
+        </div>
+
+        <div className="mt-10">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature) => (
+              <div key={feature.title} className="pt-6">
+                <div className="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                  <div className="-mt-6">
+                    <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-md shadow-lg">
+                      <span className="text-3xl">{feature.icon}</span>
+                    </div>
+                    <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-5 text-base text-gray-500">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// src/components/Contact.tsx
+export default function Contact() {
+  return (
+    <div className="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
+      <div className="relative max-w-xl mx-auto">
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Contact Us
+          </h2>
+          <p className="mt-4 text-lg leading-6 text-gray-500">
+            Get in touch with us for wholesale inquiries
+          </p>
+        </div>
+        <div className="mt-12">
+          <form className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                First name
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  autoComplete="given-name"
+                  className="py-3 px-4 block w-full shadow-sm focus:ring-secondary focus:border-secondary border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                Last name
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  autoComplete="family-name"
+                  className="py-3 px-4 block w-full shadow-sm focus:ring-secondary focus:border-secondary border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className="py-3 px-4 block w-full shadow-sm focus:ring-secondary focus:border-secondary border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                Message
+              </label>
+              <div className="mt-1">
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  className="py-3 px-4 block w-full shadow-sm focus:ring-secondary focus:border-secondary border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-secondary hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+              >
+                Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// src/components/Footer.tsx
+export default function Footer() {
+  return (
+    <footer className="bg-primary">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="col-span-2">
+            <img src="/logo.png" alt="Prime Haven Market" className="h-12 w-auto" />
+            <p className="mt-4 text-gray-300">
+              Your trusted partner in wholesale distribution.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold">Quick Links</h3>
+            <ul className="mt-4 space-y-2">
+              <li><a href="/about" className="text-gray-300 hover:text-white">About Us</a></li>
+              <li><a href="/products" className="text-gray-300 hover:text-white">Products</a></li>
+              <li><a href="/contact" className="text-gray-300 hover:text-white">Contact</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold">Contact</h3>
+            <ul className="mt-4 space-y-2">
+              <li className="text-gray-300">info@primehavenmarket.com</li>
+              <li className="text-gray-300">1-800-PRIME-HAVEN</li>
+              <li className="text-gray-300">123 Market Street</li>
+            </ul>
+          </div>
+        </div>
+        <div className="mt-8 border-t border-gray-700 pt-8">
+          <p className="text-gray-300 text-center">
+            © {new Date().getFullYear()} Prime Haven Market. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+// src/app/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #2A1B3D;
+  --secondary-color: #FF8A3D;
+  --accent-color: #4FB8E8;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-secondary hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-lg transition-all;
+  }
+  
+  .btn-secondary {
+    @apply bg-accent hover:bg-opacity-90 text-white font-semibold py-2 px-4 rounded-lg transition-all;
+  }
+}
+
+// src/lib/auth.ts
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
+
+const prisma = new PrismaClient()
+
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Invalid credentials")
+        }
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email
+          }
+        })
+
+        if (!user || !user?.hashedPassword) {
+          throw new Error("Invalid credentials")
+        }
+
+        const isCorrectPassword = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        )
+
+        if (!isCorrectPassword) {
+          throw new Error("Invalid credentials")
+        }
+
+        return user
+      }
+    })
+  ],
+  pages: {
+    signIn: '/login',
+  },
+  debug: process.env.NODE_ENV === 'development',
+  session: {
+    strategy: "jwt"
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+}
+
+// .env
+DATABASE_URL="postgresql://username:password@localhost:5432/primehaven"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+
+// Instructions for deployment:
+/*
+1. Install dependencies:
+   npm install
+
+2. Set up the database:
+   npx prisma generate
+   npx prisma db push
+
+3. Build the project:
+   npm run build
+
+4. Start the server:
+   npm start
+
+The website will be available at http://localhost:3000
+*/
